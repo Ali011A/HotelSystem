@@ -8,6 +8,7 @@ namespace Hotel.Domain.Models
 {
     public class Room
     {
+        // Primary key
         public Guid Id { get; set; } 
         public string RoomNumber { get; set; } = string.Empty;
         public string Type { get; set; } = string.Empty;
