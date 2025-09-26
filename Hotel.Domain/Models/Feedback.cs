@@ -24,6 +24,7 @@ namespace Hotel.Domain.Models
 
         // Navigation Properties
         //public Customer Customer { get; set; } = null!;
+
       
     }
 }

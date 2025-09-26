@@ -6,19 +6,12 @@ using System.Threading.Tasks;
 
 namespace Hotel.Shared.Enums
 {
-    public enum RoomType
-
+    public enum RoomStatus
     {
-        Single,
-        Double,
-        Suite
+        Avaliable,
+        Booked,
+        Maintenance
+
+
     }
-
-  
-
-   
-
-   
-
-    
 }
