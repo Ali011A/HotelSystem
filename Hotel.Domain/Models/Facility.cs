@@ -8,7 +8,7 @@ namespace Hotel.Domain.Models
 {
     public class Facility : BaseModel
     {
-        public string FacilityName { get; set; }
+        public string FacilityName { get; set; } 
         public string? Description { get; set; }
     }
 }
