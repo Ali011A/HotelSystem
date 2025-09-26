@@ -6,19 +6,10 @@ using System.Threading.Tasks;
 
 namespace Hotel.Shared.Enums
 {
-    public enum RoomType
-
+    public enum PaymentMethod
     {
-        Single,
-        Double,
-        Suite
+        Card,
+        Cach,
+        Fawry
     }
-
-  
-
-   
-
-   
-
-    
 }

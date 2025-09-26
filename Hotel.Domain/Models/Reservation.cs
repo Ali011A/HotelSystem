@@ -40,6 +40,8 @@ namespace Hotel.Domain.Models
         public int Nights { get; set; }
 
         public Feedback Feedback { get; set; }  
-        public Payment Payments { get; set; } 
+        public Payment Payments { get; set; }
+        public Guid CustomerId { get; set; }
+        public Customer Customer { get; set; }
     }
 }

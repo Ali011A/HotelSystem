@@ -21,7 +21,7 @@ namespace Hotel.Domain.Models
 
         public int Capacity { get; set; }
 
-        [MaxLength(50)]
+       
         public RoomStatus AvailabilityStatus { get; set; } 
         [MaxLength(50)]
         public string? Description { get; set; } 
@@ -33,9 +33,11 @@ namespace Hotel.Domain.Models
         public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
         public ICollection<RoomFacility> RoomFacilities { get; set; } = new List<RoomFacility>();
         public ICollection<OfferRoom> OfferRooms { get; set; } = new List<OfferRoom>();
-        public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+       // public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+        public Guid? StaffId { get; set; }
+        public HotelStaff? HotelStaff { get; set; }
+        //public ICollection<HotelStaff> HotelStaffs { get; set; } = new List<HotelStaff>();
 
-        public ICollection<AppUser> AppUsers { get; set; }
 
 
     }

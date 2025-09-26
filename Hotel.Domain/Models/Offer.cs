@@ -18,7 +18,7 @@ namespace Hotel.Domain.Models
 
         [Column(TypeName = "decimal(5, 2)")] // e.g. 99.99
         public decimal Discount { get; set; }
-        public bool IsActive { get; set; }
+       // public bool IsActive { get; set; }
         public int MinimumNights { get; set; }
     
       

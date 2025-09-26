@@ -6,19 +6,10 @@ using System.Threading.Tasks;
 
 namespace Hotel.Shared.Enums
 {
-    public enum RoomType
-
+    public enum UserType
     {
-        Single,
-        Double,
-        Suite
+        Admin,
+        Staff,
+        Customer
     }
-
-  
-
-   
-
-   
-
-    
 }

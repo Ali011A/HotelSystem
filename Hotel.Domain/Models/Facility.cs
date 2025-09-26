@@ -10,5 +10,6 @@ namespace Hotel.Domain.Models
     {
         public string FacilityName { get; set; }
         public string? Description { get; set; }
+        public ICollection<RoomFacility> RoomFacilities { get; set; } = new List<RoomFacility>();
     }
 }

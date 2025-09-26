@@ -35,6 +35,8 @@ namespace Hotel.Domain.Models
 
         [Column(TypeName = "decimal(18, 2)")]
         public decimal RefundAmount { get; set; }
+
+        
         
     
     }
