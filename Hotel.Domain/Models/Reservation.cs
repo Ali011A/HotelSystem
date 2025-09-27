@@ -16,8 +16,8 @@ namespace Hotel.Domain.Models
         public Room room { get; set; } 
         
         public ReservationStatus Status { get; set; }
-        public DateOnly CheckinDate { get; set; }
-        public DateOnly CheckoutDate { get; set; }
+        public DateTime CheckinDate { get; set; }
+        public DateTime CheckoutDate { get; set; }
         public DateTime BookingDate { get; set; }
 
 
