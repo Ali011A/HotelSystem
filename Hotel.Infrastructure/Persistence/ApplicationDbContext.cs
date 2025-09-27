@@ -26,12 +26,10 @@ namespace Hotel.Infrastructure.Persistence
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"
-         Server=DESKTOP-C6MRUHG;Database=HotelSystem;Trusted_Connection=True;
-             TrustServerCertificate=True; MultipleActiveResultSets=true")
-               .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)// عشان نقدر نستخدم الاستعلامات بدون تتبع التغييرات
-               .LogTo(log => Debug.WriteLine(log), LogLevel.Information) // عشان نقدر نشوف الاستعلامات اللي بتتنفذ في الكونسول
-               .EnableSensitiveDataLogging();// عشان  نقدر اشوف  البيانات في الكونسول   
+            //optionsBuilder.UseSqlServer("Data Source = . ; Initial Catalog=ReadingHabits ; Integrated Security = true;TrustServerCertificate=True;")
+            //   .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)// عشان نقدر نستخدم الاستعلامات بدون تتبع التغييرات
+            //   .LogTo(log => Debug.WriteLine(log), LogLevel.Information) // عشان نقدر نشوف الاستعلامات اللي بتتنفذ في الكونسول
+            //   .EnableSensitiveDataLogging();// عشان  نقدر اشوف  البيانات في الكونسول   
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
