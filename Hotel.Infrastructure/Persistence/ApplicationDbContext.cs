@@ -12,7 +12,7 @@ namespace Hotel.Infrastructure.Persistence
 {
     public class ApplicationDbContext :DbContext
     {
-          public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<HotelStaff> HotelStaffs { get; set; }
         public DbSet<Room> Rooms { get; set; }
@@ -23,16 +23,20 @@ namespace Hotel.Infrastructure.Persistence
         public DbSet<OfferRoom> OfferRooms { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"
-         Server=DESKTOP-C6MRUHG;Database=HotelSystem;Trusted_Connection=True;
-             TrustServerCertificate=True; MultipleActiveResultSets=true")
-               .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)// عشان نقدر نستخدم الاستعلامات بدون تتبع التغييرات
-               .LogTo(log => Debug.WriteLine(log), LogLevel.Information) // عشان نقدر نشوف الاستعلامات اللي بتتنفذ في الكونسول
-               .EnableSensitiveDataLogging();// عشان  نقدر اشوف  البيانات في الكونسول   
+                optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                .LogTo(log => Debug.WriteLine(log)); 
         }
+
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+           : base(options)
+        {
+            
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -255,6 +259,7 @@ namespace Hotel.Infrastructure.Persistence
                 method?.Invoke(null, new object[] { modelBuilder });
             }
         }
+        
 
         // Helper extension (put in a static class)
         public static class ModelBuilderExtensions
@@ -264,6 +269,8 @@ namespace Hotel.Infrastructure.Persistence
                 builder.Entity<TEntity>().HasQueryFilter(e => !EF.Property<bool>(e, nameof(BaseModel.IsDeleted)));
             }
         }
+
+
 
     }
 }

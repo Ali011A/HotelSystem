@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,10 +19,12 @@ namespace Hotel.Domain.Models
 
         [Column(TypeName = "decimal(5, 2)")] // e.g. 99.99
         public decimal Discount { get; set; }
-       // public bool IsActive { get; set; }
-        public int MinimumNights { get; set; }
-    
       
+        public int MinimumNights { get; set; }
+
+        public Guid StaffId { get; set; }
+        public HotelStaff Staff { get; set; } = null!; // Added By Hassan
+
         public ICollection<OfferRoom> OfferRooms { get; set; } = new List<OfferRoom>();
     }
 }

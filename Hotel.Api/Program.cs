@@ -1,3 +1,11 @@
+﻿
+using Hotel.Application.Services;
+using Hotel.Domain.Interfaces;
+using Hotel.Domain.Interfaces.Repositories;
+using Hotel.Infrastructure.Persistence;
+using Hotel.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace Hotel.Api
 {
@@ -14,6 +22,23 @@ namespace Hotel.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))  
+                       .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)                    
+                       .LogTo(log => Debug.WriteLine(log));                                           
+            });
+
+            builder.Services.AddScoped<IOfferRepository, OfferRepository>();
+
+            builder.Services.AddScoped<IOfferService, OfferService>();
+
+            // تسجيل HttpContextAccessor لو هتحتاج StaffId من Claims
+            builder.Services.AddHttpContextAccessor();
+
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -25,6 +50,7 @@ namespace Hotel.Api
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
