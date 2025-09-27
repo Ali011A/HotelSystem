@@ -47,7 +47,7 @@ namespace Hotel.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-      //  [Authorize(Roles = "Staff")]
+      /// [Authorize(Roles = "Staff")]
         public async Task<bool> Delete(Guid id)
         {
             return await _offerService.DeleteOfferAsync(id);
