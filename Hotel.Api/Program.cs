@@ -1,4 +1,4 @@
-
+﻿
 using Hotel.Api.Middleware;
 using Hotel.Application.AutoMapper.Mappings;
 using Hotel.Application.Interfaces.Queries;
@@ -45,6 +45,7 @@ namespace Hotel.Api
                 // options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -56,10 +57,33 @@ namespace Hotel.Api
             builder.Services.AddScoped<IReservationReadRepository, ReservationRepository>();
             // builder.Services.AddScoped<GlobalErrorHandlingMiddleware>();
             builder.Services.AddScoped<TransactionMiddleware>();
+
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection")) 
+                       .LogTo(log => Debug.WriteLine(log) , LogLevel.Information);        
+                
+            });
+
+
+            builder.Services.AddScoped<IOfferRepository, OfferRepository>();
+
+            builder.Services.AddScoped<IOfferService, OfferService>();
+
+
+            // تسجيل HttpContextAccessor لو هتحتاج StaffId من Claims
+          //  builder.Services.AddHttpContextAccessor();
+
+
+
             var app = builder.Build();
             app.UseMiddleware<GlobalErrorHandlingMiddleware>();
             app.UseMiddleware<TransactionMiddleware>();
             // Configure the HTTP request pipeline.
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -68,7 +92,8 @@ namespace Hotel.Api
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
+          //  app.UseAuthorization();
 
 
             app.MapControllers();

@@ -27,8 +27,11 @@ namespace Hotel.Infrastructure.Persistence
         public DbSet<OfferRoom> OfferRooms { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
-        
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+      
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+           : base(options)
         {
          //   optionsBuilder.UseSqlServer(@"
          //Server=DESKTOP-C6MRUHG;Database=HotelSystem;Trusted_Connection=True;
@@ -37,6 +40,7 @@ namespace Hotel.Infrastructure.Persistence
          //      .LogTo(log => Debug.WriteLine(log), LogLevel.Information) // عشان نقدر نشوف الاستعلامات اللي بتتنفذ في الكونسول
          //      .EnableSensitiveDataLogging();// عشان  نقدر اشوف  البيانات في الكونسول   
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -259,6 +263,7 @@ namespace Hotel.Infrastructure.Persistence
                 method?.Invoke(null, new object[] { modelBuilder });
             }
         }
+        
 
         // Helper extension (put in a static class)
         public static class ModelBuilderExtensions
@@ -268,6 +273,8 @@ namespace Hotel.Infrastructure.Persistence
                 builder.Entity<TEntity>().HasQueryFilter(e => !EF.Property<bool>(e, nameof(BaseModel.IsDeleted)));
             }
         }
+
+
 
     }
 }
