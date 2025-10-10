@@ -16,7 +16,7 @@ namespace Hotel.Api.Controllers
          public ReservationsController(IReservationService service, IMapper mapper)
          {
              _service = service;
-             _mapper = mapper;
+             _mapper = mapper; //=====
          }
  
          [HttpPost]
