@@ -12,7 +12,7 @@ namespace Hotel.Domain.Interfaces
 
         Task<OfferResponseDto> AddOfferAsync(OfferCreateDto dto, Guid staffId);
         Task<OfferResponseDto?> UpdateOfferAsync(Guid id, OfferUpdateDto dto);
-        Task<List<OfferResponseDto>> GetAllOffersAsync();
+        Task<IEnumerable<OfferResponseDto>> GetAllOffersAsync();
         Task<OfferResponseDto?> GetOfferByIdAsync(Guid id);
         Task<bool> DeleteOfferAsync(Guid id);
     }

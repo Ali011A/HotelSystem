@@ -22,8 +22,8 @@ namespace Hotel.Domain.Models
       
         public int MinimumNights { get; set; }
 
-        public Guid StaffId { get; set; }
-        public HotelStaff Staff { get; set; } = null!; // Added By Hassan
+        public Guid? StaffId { get; set; }
+        public HotelStaff? Staff { get; set; } = null!; // Added By Hassan
 
         public ICollection<OfferRoom> OfferRooms { get; set; } = new List<OfferRoom>();
     }

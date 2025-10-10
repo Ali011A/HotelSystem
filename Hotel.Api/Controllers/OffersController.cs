@@ -17,11 +17,14 @@ namespace Hotel.Api.Controllers
             _offerService = offerService;
         }
 
+
         [HttpGet]
-        public async Task<List<OfferResponseDto>> GetAll()
+        public async Task<IEnumerable<OfferResponseDto>> GetAll()
         {
             return await _offerService.GetAllOffersAsync();
         }
+
+
 
         [HttpGet("{id}")]
         public async Task<OfferResponseDto?> GetById(Guid id)
@@ -29,15 +32,21 @@ namespace Hotel.Api.Controllers
             return await _offerService.GetOfferByIdAsync(id);
         }
 
+
+
         [HttpPost]
-      //  [Authorize(Roles = "Staff")]
-        public async Task<OfferResponseDto> Add(OfferCreateDto dto)
+        // [Authorize(Roles = "Staff")]
+        [AllowAnonymous]
+        public async Task<OfferResponseDto> Add([FromBody] OfferCreateDto dto)
         {
             // هنا لازم تجيب staffId من الـ Claims بعد الـ Login
-           var staffId = Guid.Parse(User.FindFirst("StaffId")!.Value);
+            //  var staffId = Guid.Parse(User.FindFirst("StaffId")!.Value);
 
-           return await _offerService.AddOfferAsync(dto, staffId);
+            //return await _offerService.AddOfferAsync(dto, staffId);
+            return await _offerService.AddOfferAsync(dto, Guid.Empty);
         }
+
+
 
         [HttpPut("{id}")]
       //  [Authorize(Roles = "Staff")]
@@ -45,6 +54,8 @@ namespace Hotel.Api.Controllers
         {
             return await _offerService.UpdateOfferAsync(id, dto);
         }
+
+
 
         [HttpDelete("{id}")]
       //// [Authorize(Roles = "Staff")]

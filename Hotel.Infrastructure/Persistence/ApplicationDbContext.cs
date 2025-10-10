@@ -24,12 +24,7 @@ namespace Hotel.Infrastructure.Persistence
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-                optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-                .LogTo(log => Debug.WriteLine(log)); 
-        }
-
+      
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)

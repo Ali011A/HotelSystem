@@ -4,6 +4,7 @@ using Hotel.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hotel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251010074411_Deleted by is null and Deleted at by default")]
+    partial class DeletedbyisnullandDeletedatbydefault
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,7 +209,7 @@ namespace Hotel.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid?>("StaffId")
+                    b.Property<Guid>("StaffId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateOnly>("StartDate")
@@ -650,7 +653,9 @@ namespace Hotel.Infrastructure.Migrations
                 {
                     b.HasOne("Hotel.Domain.Models.HotelStaff", "Staff")
                         .WithMany("MangeedOffers")
-                        .HasForeignKey("StaffId");
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Staff");
                 });

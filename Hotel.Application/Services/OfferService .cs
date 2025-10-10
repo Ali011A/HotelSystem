@@ -29,9 +29,15 @@ namespace Hotel.Application.Services
                 EndDate = dto.EndDate,
                 Discount = dto.Discount,
                 MinimumNights = dto.MinimumNights,
-                StaffId = staffId,
+               
+                //StaffId = staffId,
+                StaffId = null,
+          
+
                 OfferRooms = dto.AssignedRoomIds.Select(rid => new OfferRoom { RoomId = rid }).ToList()
             };
+
+      
 
             await _offerRepository.AddAsync(offer);
 
@@ -71,7 +77,7 @@ namespace Hotel.Application.Services
             };
         }
 
-        public async Task<List<OfferResponseDto>> GetAllOffersAsync()
+        public async Task<IEnumerable<OfferResponseDto>> GetAllOffersAsync()
         {
             var offers = await _offerRepository.GetAllAsync();
 
@@ -88,17 +94,17 @@ namespace Hotel.Application.Services
 
         public async Task<OfferResponseDto?> GetOfferByIdAsync(Guid id)
         {
-            var o = await _offerRepository.GetByIdAsync(id);
-            if (o == null) return null;
+            var offer = await _offerRepository.GetByIdAsync(id);
+            if (offer == null) return null;
 
             return new OfferResponseDto
             {
-                Id = o.Id,
-                OfferName = o.OfferName,
-                Discount = o.Discount,
-                StartDate = o.StartDate,
-                EndDate = o.EndDate,
-                RoomIds = o.OfferRooms.Select(or => or.RoomId).ToList()
+                Id = offer.Id,
+                OfferName = offer.OfferName,
+                Discount = offer.Discount,
+                StartDate = offer.StartDate,
+                EndDate = offer.EndDate,
+                RoomIds = offer.OfferRooms.Select(or => or.RoomId).ToList()
             };
         }
 
