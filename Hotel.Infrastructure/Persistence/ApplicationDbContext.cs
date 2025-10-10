@@ -12,6 +12,10 @@ namespace Hotel.Infrastructure.Persistence
 {
     public class ApplicationDbContext :DbContext
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
         public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<HotelStaff> HotelStaffs { get; set; }
@@ -29,7 +33,12 @@ namespace Hotel.Infrastructure.Persistence
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
         {
-            
+         //   optionsBuilder.UseSqlServer(@"
+         //Server=DESKTOP-C6MRUHG;Database=HotelSystem;Trusted_Connection=True;
+         //    TrustServerCertificate=True; MultipleActiveResultSets=true")
+         //      .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)// عشان نقدر نستخدم الاستعلامات بدون تتبع التغييرات
+         //      .LogTo(log => Debug.WriteLine(log), LogLevel.Information) // عشان نقدر نشوف الاستعلامات اللي بتتنفذ في الكونسول
+         //      .EnableSensitiveDataLogging();// عشان  نقدر اشوف  البيانات في الكونسول   
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

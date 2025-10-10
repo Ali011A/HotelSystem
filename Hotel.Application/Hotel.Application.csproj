@@ -14,6 +14,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Hotel.Domain\Hotel.Domain.csproj" />
+    <Folder Include="Services\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
