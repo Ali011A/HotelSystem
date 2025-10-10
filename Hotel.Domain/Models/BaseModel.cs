@@ -15,9 +15,9 @@ namespace Hotel.Domain.Models
         public DateTime UpdatedAt { get; set;} = DateTime.Now;
 
         public DateTime DeletedAt {  get; set; } = DateTime.Now;
-        public Guid CreatedBy { get; set; }
-        public Guid UpdatedBy { get; set; }
-        public Guid DeletedBy { get; set;} 
+        public Guid? CreatedBy { get; set; }
+        public Guid? UpdatedBy { get; set; }
+        public Guid? DeletedBy { get; set;} 
 
 
 
