@@ -7,11 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hotel.Domain\Hotel.Domain.csproj" />
+    <Compile Remove="AutoMapper\**" />
+    <EmbeddedResource Remove="AutoMapper\**" />
+    <None Remove="AutoMapper\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="15.0.1" />
+    <ProjectReference Include="..\Hotel.Domain\Hotel.Domain.csproj" />
+    <Folder Include="Services\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

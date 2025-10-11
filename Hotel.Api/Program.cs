@@ -1,3 +1,14 @@
+﻿
+using Hotel.Api.Middleware;
+using Hotel.Application.AutoMapper.Mappings;
+using Hotel.Application.Interfaces.Queries;
+using Hotel.Application.Services;
+using Hotel.Domain.Interfaces.Repositories;
+using Hotel.Infrastructure.Persistence;
+using Hotel.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 
 using Hotel.Application.AutoMapper;
 using Hotel.Application.Service;
@@ -19,6 +30,32 @@ namespace Hotel.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            
+            // ---------- Logging ----------
+            
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+            // Register DbContext FIRST
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(connectionString, sql =>
+                {
+                    sql.EnableRetryOnFailure(3, TimeSpan.FromSeconds(5), null);
+                });
+
+                options.LogTo(msg => Debug.WriteLine(msg), LogLevel.Information);
+
+                if (builder.Environment.IsDevelopment())
+                {
+                    options.EnableSensitiveDataLogging();
+                }
+
+          
+                // options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            });
+
 
             // Replace this line:
             builder.Services.AddAutoMapper(cfg => { }, typeof(FeedbackProfile).Assembly);
@@ -35,10 +72,40 @@ namespace Hotel.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+            builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IReservationService, ReservationService>();
+            builder.Services.AddScoped<IReservationReadRepository, ReservationRepository>();
+            // builder.Services.AddScoped<GlobalErrorHandlingMiddleware>();
+            builder.Services.AddScoped<TransactionMiddleware>();
+
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection")) 
+                       .LogTo(log => Debug.WriteLine(log) , LogLevel.Information);        
+                
+            });
+
+
+            builder.Services.AddScoped<IOfferRepository, OfferRepository>();
+
+            builder.Services.AddScoped<IOfferService, OfferService>();
+
+
+            // تسجيل HttpContextAccessor لو هتحتاج StaffId من Claims
+          //  builder.Services.AddHttpContextAccessor();
+
+
 
             var app = builder.Build();
-
+            app.UseMiddleware<GlobalErrorHandlingMiddleware>();
+            app.UseMiddleware<TransactionMiddleware>();
             // Configure the HTTP request pipeline.
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -48,7 +115,8 @@ namespace Hotel.Api
             app.UseHttpsRedirection();
             app.UseAuthentication();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
+          //  app.UseAuthorization();
 
             app.MapControllers();
 

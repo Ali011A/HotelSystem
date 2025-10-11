@@ -8,11 +8,10 @@ namespace Hotel.Domain.Models
 {
     public class OfferRoom
     {
-        public Guid OfferId { get; set; }
-        
-        public Offer Offer { get; set; } = null!;
+        public Guid? OfferId { get; set; } // optinal to do soft delete without problem
+        public Offer? Offer { get; set; } 
 
-        public Guid RoomId { get; set; }
+        public Guid RoomId { get; set; } 
         public Room Room { get; set; } = null!;
     }
 }
