@@ -28,7 +28,10 @@ namespace Hotel.Application.AutoMapper
 
             // Entity -> DTO (للعرض)
             CreateMap<Feedback, CreateFeedbackDto>();
-            CreateMap<Feedback, CreateFeedbackDto>(); 
+            CreateMap<Feedback, CreateFeedbackDto>();
+
+
+            
         }
     }
 }

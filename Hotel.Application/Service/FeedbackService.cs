@@ -17,114 +17,137 @@ namespace Hotel.Application.Service
     {
         IFeedbackRepository FeedbackRepository { get; set; }
 
-        IUnitOfWork UnitOfWork { get; set; }
-
         IMapper Mapper { get; set; }
-        public FeedbackService(IFeedbackRepository feedbackRepository, IMapper mapper, IUnitOfWork unitOfWork)
+        public FeedbackService(IFeedbackRepository feedbackRepository, IMapper mapper )
         {
             FeedbackRepository = feedbackRepository;
             Mapper = mapper;
-            UnitOfWork = unitOfWork;
+           
         }
         public async Task<ResultModelVoid> CreateAsync(CreateFeedbackDto dto)
         {
-            
             var canAdd = await FeedbackRepository.CustomerHasCompletedReservationAsync(dto.ReservationId);
-            if (!canAdd) throw new InvalidOperationException("Reservation not completed or not found for this customer.");
 
+            if (!canAdd)
+            {
+                return new ResultModelVoid
+                {
+                    Success = false,
+                    ErroredMessage = "Reservation not completed or not found for this customer."
+                };
+            }
+
+            
             var entity = Mapper.Map<Feedback>(dto);
-            await FeedbackRepository.AddAsync(entity);
+           
+            var savedRows = await FeedbackRepository.AddAsync(entity);
 
-            var Saved = await UnitOfWork.SaveChangesAsync();
+            if (savedRows > 0)
+            {
+                return new ResultModelVoid
+                {
+                    Success = true,
+                    SuccessFullMessage = "Feedback added successfully."
+                };
+            }
 
-            if (Saved)
-                return 
-                    new ResultModelVoid 
-                    { 
-                        Success = true ,
-                        SuccessFullMessage ="Added Successfully FeedBack"
-                    };
-
-            return new ResultModelVoid 
-            { 
+            return new ResultModelVoid
+            {
                 Success = false,
-                ErroredMessage = "Failed to save feedback." 
+                ErroredMessage = "Failed to save feedback."
             };
         }
 
+  
+    
         public async Task<ResultModel<Guid>> UpdateAsync(Guid id, UpdateFeedbackDto dto, CancellationToken cancellation = default)
         {
             var existing = await FeedbackRepository.GetByIdAsync(id, cancellation);
 
-            if (existing == null) throw new KeyNotFoundException("Feedback not found");
+            if (existing == null)
+            {
+                return new ResultModel<Guid>
+                {
+                    Success = false,
+                    ErroredMessage = "Feedback not found.",
+                    Data = Guid.Empty
+                };
+            }
 
+            
             Mapper.Map(dto, existing);
 
-            await FeedbackRepository.UpdateAsync(existing);
+            
+            var savedRows = await FeedbackRepository.UpdateAsync(existing);
 
-            var seved= await UnitOfWork.SaveChangesAsync();
-
-            if (seved)
-
+            if (savedRows > 0)
+            {
                 return new ResultModel<Guid>
                 {
                     Success = true,
-                    SuccessFullMessage = " updated feed back Successfully",
+                    SuccessFullMessage = "Feedback updated successfully.",
                     Data = existing.Id
                 };
+            }
 
             return new ResultModel<Guid>
             {
                 Success = false,
-                ErroredMessage = "faild updated feedback"
+                ErroredMessage = "Failed to update feedback. No changes were applied."
+          
             };
-           
         }
+
+     
 
         public async Task<ResultModelVoid> DeleteAsync(Guid id, CancellationToken cancellation = default)
         {
-            await FeedbackRepository.SoftDeleteAsync(id, cancellation);
+            var savedRows = await FeedbackRepository.SoftDeleteAsync(id, cancellation);
 
-            var save = await UnitOfWork.SaveChangesAsync();
-
-            if (save)
+            if (savedRows > 0)
+            {
                 return new ResultModelVoid
                 {
                     Success = true,
-                    SuccessFullMessage = " feed back is deleted"
+                    SuccessFullMessage = "Feedback is deleted successfully."
                 };
+            }
+           
             return new ResultModelVoid
             {
                 Success = false,
-                ErroredMessage = " faild deleted feedback"
+                ErroredMessage = "Failed to delete feedback. It may not exist."
             };
         }
 
-        public async Task<ResultModel<CreateFeedbackDto>> GetFeedBack(Guid id, CancellationToken cancellation = default)
+      
+       
+        public async Task<ResultModel<CreateFeedbackDto>> GetFeedbackAsync(Guid id, CancellationToken cancellation = default)
         {
-          var feedback =  await FeedbackRepository.GetByIdAsync(id);
+            var feedback = await FeedbackRepository.GetByIdAsync(id, cancellation);
 
-           var dto = Mapper.Map<CreateFeedbackDto>(feedback);
+            if (feedback == null)
+            {
+                return new ResultModel<CreateFeedbackDto>
+                {
+                    Success = false,
+                    ErroredMessage = $"Feedback with ID '{id}' not found.",
+                    Data = null
+                };
+            }
 
-            if(dto!=null)
+            var dto = Mapper.Map<CreateFeedbackDto>(feedback);
 
             return new ResultModel<CreateFeedbackDto>
             {
                 Success = true,
-                SuccessFullMessage = "retrived feedback ",
+                SuccessFullMessage = "Feedback retrieved successfully.",
                 Data = dto
-
-            };
-
-            return new ResultModel<CreateFeedbackDto>
-            {
-                Success = false,
-                ErroredMessage = " faild to retrived feedback",
-                Data = null
             };
         }
 
-        public async Task<ResultModel<List<CreateFeedbackDto>>> GettAllFeedBacks()
+       
+        public async Task<ResultModel<List<CreateFeedbackDto>>> GetAllFeedbacksAsync()
         {
             var feedbacks = await FeedbackRepository.GetAllFeedBaksAsync();
 
@@ -135,21 +158,19 @@ namespace Hotel.Application.Service
                 return new ResultModel<List<CreateFeedbackDto>>
                 {
                     Success = true,
-                    SuccessFullMessage = "retrived all feedbacks",
+                    SuccessFullMessage = "All feedbacks retrieved successfully.",
                     Data = dtos
                 };
-
             }
 
             return new ResultModel<List<CreateFeedbackDto>>
             {
                 Success = false,
-                ErroredMessage = " faild to retruved all feedbacks",
-
+                ErroredMessage = "Failed to retrieve all feedbacks.",
+                Data = null
             };
-
         }
-
-
     }
 }
+    
+

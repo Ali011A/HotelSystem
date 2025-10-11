@@ -11,10 +11,11 @@ namespace Hotel.Application.Services
 {
     public interface IFeedbackService
     {
-        Task<ResultModelVoid> CreateAsync(CreateFeedbackDto dto);
+         Task<ResultModelVoid> CreateAsync(CreateFeedbackDto dto);
         Task<ResultModel<Guid>> UpdateAsync(Guid id, UpdateFeedbackDto dto, CancellationToken cancellation = default);
         Task<ResultModelVoid> DeleteAsync(Guid id, CancellationToken cancellation = default);
-        Task<ResultModel<CreateFeedbackDto>> GetFeedBack(Guid id, CancellationToken cancellation = default) ;   
+        Task<ResultModel<CreateFeedbackDto>> GetFeedbackAsync(Guid id, CancellationToken cancellation = default);
+        Task<ResultModel<List<CreateFeedbackDto>>> GetAllFeedbacksAsync();
 
 
     }

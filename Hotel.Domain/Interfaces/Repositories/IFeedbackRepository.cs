@@ -9,11 +9,11 @@ namespace Hotel.Domain.Interfaces.Repositories
 {
     public interface IFeedbackRepository
     {
-        Task AddAsync(Feedback feedback);
+        Task<int> AddAsync(Feedback feedback);
         Task<Feedback> GetByIdAsync(Guid id, CancellationToken cancellation = default);
        
-        Task UpdateAsync(Feedback feedback);
-        Task SoftDeleteAsync(Guid id, CancellationToken cancellation = default);
+        Task<int> UpdateAsync(Feedback feedback);
+        Task<int> SoftDeleteAsync(Guid id, CancellationToken cancellation = default);
         Task<bool> CustomerHasCompletedReservationAsync(Guid reservationId);
         Task<List<Feedback>> GetAllFeedBaksAsync();
     }

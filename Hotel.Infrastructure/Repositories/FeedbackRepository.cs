@@ -1,11 +1,13 @@
 ﻿using Hotel.Domain.Interfaces.Repositories;
 using Hotel.Domain.Models;
 using Hotel.Infrastructure.Persistence;
+using Hotel.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Hotel.Infrastructure.Repositories
@@ -19,9 +21,12 @@ namespace Hotel.Infrastructure.Repositories
             Context = context;
         }
 
-        public async Task  AddAsync(Feedback feedback)
+        public async Task<int>  AddAsync(Feedback feedback)
         {
             await  Context.Feedbacks.AddAsync(feedback);
+            
+            return await Context.SaveChangesAsync();    
+
          
         }
         public async Task<Feedback> GetByIdAsync(Guid id, CancellationToken cancellation = default)
@@ -31,28 +36,36 @@ namespace Hotel.Infrastructure.Repositories
                 .FirstOrDefaultAsync(f => f.Id == id, cancellation);
         }
 
-        public async Task UpdateAsync(Feedback feedback)
+        public async Task<int> UpdateAsync(Feedback feedback)
         {
             Context.Feedbacks.Update(feedback);
+         return await  Context.SaveChangesAsync();
            
         }
-        public async Task SoftDeleteAsync(Guid id, CancellationToken cancellation = default)
+        public async Task<int> SoftDeleteAsync(Guid id, CancellationToken cancellation = default)
         {
-            var f = await Context.Feedbacks.FindAsync(new object[] { id }, cancellation);
-            if (f == null) return;
-            f.IsDeleted = true;
+            var entity = await GetByIdAsync(id, cancellation);
+
+            if (entity == null)
+            {
+               
+                return 0;
+            }
+
+           
+            entity.IsDeleted = true;
+            Context.Update(entity); 
             
+            return await Context.SaveChangesAsync(cancellation);
+
         }
         public async Task<bool> CustomerHasCompletedReservationAsync(Guid reservationId)
         {
-            var res = await Context.Reservations
-                .FirstOrDefaultAsync(r => r.Id == reservationId);
+            var isCompleted = await Context.Reservations
+                .Where(r => r.Id == reservationId && r.Status == ReservationStatus.Completed)
+                .AnyAsync();
 
-            if (res == null)
-                return false;
-
-                return
-                res.CheckoutDate <= DateTime.UtcNow;
+            return isCompleted;
         }
 
         public async Task<List<Feedback>> GetAllFeedBaksAsync()
