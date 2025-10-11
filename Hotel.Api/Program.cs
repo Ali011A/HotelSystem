@@ -1,6 +1,6 @@
 ﻿
 using Hotel.Api.Middleware;
-using Hotel.Application.AutoMapper.Mappings;
+
 using Hotel.Application.Interfaces.Queries;
 using Hotel.Application.Services;
 using Hotel.Domain.Interfaces.Repositories;
@@ -9,8 +9,6 @@ using Hotel.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
-
-using Hotel.Application.AutoMapper;
 using Hotel.Application.Service;
 using Hotel.Application.Services;
 using Hotel.Domain.Interfaces.Repositories;
@@ -20,6 +18,9 @@ using Hotel.Infrastructure.Repositories;
 using Hotel.Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using IUnitOfWork = Hotel.Domain.Interfaces.Repositories.IUnitOfWork;
+using UnitOfWork = Hotel.Infrastructure.Repositories.UnitOfWork;
+using Hotel.Domain.Interfaces;
 
 namespace Hotel.Api
 {

@@ -30,14 +30,14 @@ namespace Hotel.Infrastructure.Persistence
 
       
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-           : base(options)
-        {
-            //optionsBuilder.UseSqlServer("Data Source = . ; Initial Catalog=ReadingHabits ; Integrated Security = true;TrustServerCertificate=True;")
-            //   .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)// عشان نقدر نستخدم الاستعلامات بدون تتبع التغييرات
-            //   .LogTo(log => Debug.WriteLine(log), LogLevel.Information) // عشان نقدر نشوف الاستعلامات اللي بتتنفذ في الكونسول
-            //   .EnableSensitiveDataLogging();// عشان  نقدر اشوف  البيانات في الكونسول   
-        }
+        //public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        //   : base(options)
+        //{
+        //    //optionsBuilder.UseSqlServer("Data Source = . ; Initial Catalog=ReadingHabits ; Integrated Security = true;TrustServerCertificate=True;")
+        //    //   .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)// عشان نقدر نستخدم الاستعلامات بدون تتبع التغييرات
+        //    //   .LogTo(log => Debug.WriteLine(log), LogLevel.Information) // عشان نقدر نشوف الاستعلامات اللي بتتنفذ في الكونسول
+        //    //   .EnableSensitiveDataLogging();// عشان  نقدر اشوف  البيانات في الكونسول   
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
