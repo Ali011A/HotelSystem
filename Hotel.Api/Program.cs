@@ -35,7 +35,7 @@ namespace Hotel.Api
             // ---------- Logging ----------
             
 
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = builder.Configuration.GetConnectionString("Local");
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
             // Register DbContext FIRST
