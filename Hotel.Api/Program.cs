@@ -1,5 +1,23 @@
 
-using Hotel.Application.AutoMapper;
+using Hotel.Api.AuoroMapper;
+using Hotel.Api.Middleware;
+using Hotel.Application.Interfaces.Queries;
+using Hotel.Application.InterfaceServices;
+using Hotel.Application.Services;
+//using IUnitOfWork = Hotel.Domain.Interfaces.Repositories.IUnitOfWork;
+//using UnitOfWork = Hotel.Infrastructure.Repositories.UnitOfWork;
+using Hotel.Domain.Interfaces;
+using Hotel.Domain.Interfaces.Repositories;
+using Hotel.Domain.Interfaces.Repositories;
+using Hotel.Infrastructure.Persistence;
+using Hotel.Infrastructure.Persistence;
+using Hotel.Infrastructure.Repositories;
+using Hotel.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 using Hotel.Application.Service;
 using Hotel.Application.Services;
 using Hotel.Domain.Interfaces.Repositories;
@@ -9,6 +27,9 @@ using Hotel.Infrastructure.Repositories;
 using Hotel.Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using IUnitOfWork = Hotel.Domain.Interfaces.Repositories.IUnitOfWork;
+using UnitOfWork = Hotel.Infrastructure.Repositories.UnitOfWork;
+using Hotel.Domain.Interfaces;
 
 namespace Hotel.Api
 {
@@ -21,7 +42,7 @@ namespace Hotel.Api
             // Add services to the container.
 
             // Replace this line:
-            builder.Services.AddAutoMapper(cfg => { }, typeof(FeedbackProfile).Assembly);
+            builder.Services.AddAutoMapper(cfg => { }, typeof(AuotoMaperProfile).Assembly);
 
             // With this line:
             builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
@@ -32,9 +53,16 @@ namespace Hotel.Api
 
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddAutoMapper(typeof(AuotoMaperProfile).Assembly);
+            builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IReservationService, ReservationService>();
+            builder.Services.AddScoped<IReservationReadRepository, ReservationRepository>();
+            // builder.Services.AddScoped<GlobalErrorHandlingMiddleware>();
+            builder.Services.AddScoped<TransactionMiddleware>();
+            builder.Services.AddScoped<IReservationReadRepository, ReservationRepository>();
+            // builder.Services.AddScoped<GlobalErrorHandlingMiddleware>();
+            builder.Services.AddScoped<TransactionMiddleware>();
 
             var app = builder.Build();
 

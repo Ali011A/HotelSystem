@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Hotel.Application.DTOs;
-using Hotel.Application.Services;
 using Hotel.Domain.Interfaces.Repositories;
-using Hotel.Domain.Interfaces.UnitOfWork;
 using Hotel.Domain.Models;
 using Hotel.Application.ResultModel;
 using System;
@@ -11,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hotel.Application.Service
+namespace Hotel.Application.Services
 {
     public class FeedbackService : IFeedbackService
     {
